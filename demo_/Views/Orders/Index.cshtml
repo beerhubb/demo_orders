@@ -1,0 +1,77 @@
+﻿@model IEnumerable<demo_.Models.Orders>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
+
+<h1>OrderList</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-info">Order New</a>
+</p>
+<table id="dataTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orderdate)
+            </th>
+            <th>
+                @Html.DisplayName("Freight")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Orders_ID)
+                </td>
+                <td>
+                    @if (item.Customers == "1") { @Html.DisplayName("Customer ID")}
+                    @if (item.Customers == "2") { @Html.DisplayName("Company Name")}
+                    @if (item.Customers == "3") { @Html.DisplayName("Contact Name")}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Orderdate)
+                </td>
+                <td>
+                    @Html.ActionLink("Update", "Edit", new {  id=item.Orders_ID },new { @Class="btn btn-warning"}) |
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.Orders_ID },new { @Class="btn btn-danger"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+    </script>
+}
